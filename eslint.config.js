@@ -14,7 +14,6 @@ export default defineConfig([
       reactRefresh.configs.vite,
     ],
     languageOptions: {
-      ecmaVersion: 2020,
       globals: globals.browser,
       parserOptions: {
         ecmaVersion: 'latest',
@@ -24,6 +23,12 @@ export default defineConfig([
     },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+    },
+  },
+  {
+    files: ['vite.config.*', '*.config.*', 'scripts/**/*.{js,ts}'],
+    languageOptions: {
+      globals: { ...globals.node },     // 🔑 Node 전역(process 등) 허용
     },
   },
 ])
