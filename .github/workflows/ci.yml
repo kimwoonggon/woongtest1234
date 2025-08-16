@@ -8,7 +8,7 @@ on:
 
 jobs:
   test_and_build:
-    runs-on: macos-14   # macOS GitHub-hosted runner
+    runs-on: macos-14
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,11 +22,28 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Test
-        run: npm run test
+      # 1) Lint (스크립트가 있으면만 실행)
+      - name: Lint
+        run: npm run lint --if-present
 
+      # 2) Type check (TypeScript 프로젝트면 수행)
+      - name: TypeCheck
+        run: npm run typecheck --if-present
+
+      # 3) Test + Coverage (스크립트가 있으면만 실행)
+      - name: Test (with coverage)
+        run: npm run test --if-present -- --coverage
+
+      # 4) 커버리지 리포트 보존(있을 때만 업로드)
+      - name: Upload coverage artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage
+
+      # 5) Build (배포는 여기서 하지 않음)
       - name: Build (no deploy here)
         env:
-          # PR/feature 브랜치 빌드 시는 base를 루트로 둡니다
           BASE_PATH: /
         run: npm run build
