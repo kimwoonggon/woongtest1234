@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,            // JS에 타입 에러까지 보고 싶으면 true (처음엔 false 권장)
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "target": "ES2022",
+    "moduleResolution": "bundler",
+    "strict": false,
+    "skipLibCheck": true,
+    "types": ["vite/client", "node"]
+  },
+  "include": ["src", "vite.config.*"]
+}
